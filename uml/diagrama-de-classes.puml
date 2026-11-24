@@ -1,0 +1,224 @@
+@startuml
+title Bolonha e Milano - Diagrama de classes (ate a Etapa 8)
+skinparam classAttributeIconSize 0
+hide empty members
+
+class Main {
+  + {static} main(args: String[]): void
+}
+
+class Menu {
+  - {static} NOMES_CIDADES: String[]
+  - scanner: Scanner
+  - emExecucao: boolean
+  - partida: Partida
+  - cidade: Cidade
+  - mercado: Mercado
+  - agricultura: Agricultura
+  - governo: Governo
+  - construcoes: Construcoes
+  - nobreza: Nobreza
+  + executar(): void
+  - exibirOpcoes(): void
+  - lerOpcao(): int
+  - lerQuantidade(): int
+  - lerInteiro(): int
+  - lerTexto(): String
+  - exigirJogoEmAndamento(): boolean
+  - processarOpcao(opcao: int): void
+  - iniciarNovoJogo(): void
+  - exibirStatus(): void
+  - abrirMercado(): void
+  - comprarGraos(): void
+  - venderGraos(): void
+  - comprarTerras(): void
+  - venderTerras(): void
+  - abrirAgricultura(): void
+  - colher(): void
+  - distribuirAlimentos(): void
+  - abrirGoverno(): void
+  - arrecadarImpostos(): void
+  - definirTaxaImposto(): void
+  - definirJustica(): void
+  - abrirConstrucoes(): void
+  - recrutarSoldados(): void
+  - construir(): void
+  - encerrarTurno(): void
+  - exibirClassificacao(): void
+  - encerrarPartida(): void
+  - exibirSobre(): void
+}
+
+class Jogador {
+  - {static} TITULOS: String[]
+  - nome: String
+  - nivelTitulo: int
+  + Jogador(nome: String)
+  + getNome(): String
+  + getTitulo(): String
+  + getNivelTitulo(): int
+  + promover(): boolean
+  + ehMonarca(): boolean
+}
+
+class Cidade {
+  - nome: String
+  - anoAtual: int
+  - dono: Jogador
+  - florins: int
+  - terras: int
+  - graos: int
+  - servos: int
+  - taxaImposto: int
+  - nivelJustica: String
+  - soldados: int
+  - construcoes: int
+  - colheitaFeita: boolean
+  - impostosArrecadados: boolean
+  + Cidade(nome: String, dono: Jogador)
+  + getNome(): String
+  + getAnoAtual(): int
+  + getDono(): Jogador
+  + avancarAno(): void
+  + isColheitaFeita(): boolean
+  + marcarColheitaFeita(): void
+  + isImpostosArrecadados(): boolean
+  + marcarImpostosArrecadados(): void
+  + getFlorins(): int
+  + adicionarFlorins(qtd: int): void
+  + removerFlorins(qtd: int): boolean
+  + getTerras(): int
+  + adicionarTerras(qtd: int): void
+  + removerTerras(qtd: int): boolean
+  + getGraos(): int
+  + adicionarGraos(qtd: int): void
+  + removerGraos(qtd: int): boolean
+  + getServos(): int
+  + adicionarServos(qtd: int): void
+  + removerServos(qtd: int): boolean
+  + getTaxaImposto(): int
+  + setTaxaImposto(taxa: int): void
+  + getNivelJustica(): String
+  + setNivelJustica(nivel: String): void
+  + getSoldados(): int
+  + adicionarSoldados(qtd: int): void
+  + removerSoldados(qtd: int): boolean
+  + getConstrucoes(): int
+  + adicionarConstrucoes(qtd: int): void
+  + removerConstrucoes(qtd: int): boolean
+  + exibirStatus(): void
+}
+
+class Mercado {
+  - {static} PRECO_GRAO: int
+  - {static} PRECO_TERRA: int
+  + getPrecoGrao(): int
+  + getPrecoTerra(): int
+  + comprarGraos(cidade: Cidade, quantidade: int): boolean
+  + venderGraos(cidade: Cidade, quantidade: int): boolean
+  + comprarTerras(cidade: Cidade, quantidade: int): boolean
+  + venderTerras(cidade: Cidade, quantidade: int): boolean
+  - comprar(cidade: Cidade, quantidade: int, preco: int, graos: boolean): boolean
+}
+
+class Agricultura {
+  - {static} HECTARES_POR_SERVO: int
+  - {static} HECTARES_POR_SEMENTE: int
+  - {static} RENDIMENTO_POR_HECTARE: int
+  - {static} SERVOS_POR_GRAO: int
+  - {static} CRESCIMENTO_PERCENTUAL: int
+  - {static} PERCENTUAL_MINIMO: int
+  - {static} PERCENTUAL_MAXIMO: int
+  + processarColheita(cidade: Cidade): int
+  + distribuirAlimentos(cidade: Cidade, percentual: int): boolean
+}
+
+class Governo {
+  - {static} TAXA_MAXIMA: int
+  - {static} MULTIPLICADOR_JUSTA: double
+  - {static} MULTIPLICADOR_MODERADA: double
+  - {static} MULTIPLICADOR_SEVERA: double
+  + arrecadarImpostos(cidade: Cidade): int
+  + definirTaxaImposto(cidade: Cidade, taxa: int): boolean
+  + definirJustica(cidade: Cidade, nivel: String): boolean
+  - multiplicadorPara(nivel: String): double
+}
+
+class Construcoes {
+  - {static} PRECO_SOLDADO: int
+  - {static} SERVOS_POR_SOLDADO: int
+  - {static} PRECO_CONSTRUCAO: int
+  + getPrecoSoldado(): int
+  + getPrecoConstrucao(): int
+  + recrutarSoldados(cidade: Cidade, quantidade: int): boolean
+  + construir(cidade: Cidade, quantidade: int): boolean
+}
+
+class Nobreza {
+  - {static} PESO_CONSTRUCAO: int
+  - {static} PESO_SOLDADO: int
+  - {static} PESO_SERVO: int
+  - {static} HECTARES_POR_PONTO: int
+  - {static} PRESTIGIO_MINIMO: int[]
+  + calcularPrestigio(cidade: Cidade): int
+  + prestigioParaProximoTitulo(jogador: Jogador): int
+  + verificarPromocao(cidade: Cidade): boolean
+}
+
+class Partida {
+  + {static} MAXIMO_JOGADORES: int
+  - {static} ANO_FINAL: int
+  - cidades: List<Cidade>
+  - indiceAtual: int
+  + adicionarCidade(cidade: Cidade): boolean
+  + getCidades(): List<Cidade>
+  + getCidadeAtual(): Cidade
+  + getAnoAtual(): int
+  + getAnoFinal(): int
+  + passarTurno(): boolean
+  + encerrarAno(nobreza: Nobreza): List<Cidade>
+  + terminou(): boolean
+  + determinarVencedor(nobreza: Nobreza): Cidade
+}
+
+class Testes {
+  - {static} aprovados: int
+  - {static} reprovados: int
+  + {static} main(args: String[]): void
+  - {static} verificar(descricao: String, condicao: boolean): void
+  - {static} novaCidade(): Cidade
+  - {static} testarCidade(): void
+  - {static} testarMercado(): void
+  - {static} testarAgricultura(): void
+  - {static} testarGoverno(): void
+  - {static} testarConstrucoes(): void
+  - {static} testarJogadorENobreza(): void
+  - {static} testarPartida(): void
+}
+
+Main ..> Menu : cria e usa
+Menu --> Partida
+Menu --> Cidade
+Menu --> Mercado
+Menu --> Agricultura
+Menu --> Governo
+Menu --> Construcoes
+Menu --> Nobreza
+Cidade --> Jogador : dono
+Mercado ..> Cidade : usa
+Agricultura ..> Cidade : usa
+Governo ..> Cidade : usa
+Construcoes ..> Cidade : usa
+Nobreza ..> Cidade : usa
+Nobreza ..> Jogador : usa
+Partida o-- "1..4" Cidade
+Partida ..> Nobreza : usa
+Testes ..> Agricultura : testa
+Testes ..> Cidade : testa
+Testes ..> Construcoes : testa
+Testes ..> Governo : testa
+Testes ..> Jogador : testa
+Testes ..> Mercado : testa
+Testes ..> Nobreza : testa
+Testes ..> Partida : testa
+@enduml
